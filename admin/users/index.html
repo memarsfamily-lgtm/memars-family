@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>User Management | ME MARS FAMILY Admin</title>
+    <link rel="icon" href="../../assets/me-mars-family-logo.jpg" type="image/jpeg" />
+    <link rel="stylesheet" href="../admin.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="../../lib/supabase-config.js" defer></script>
+    <script src="../../lib/supabase-client.js" defer></script>
+    <script src="../auth.js" defer></script>
+    <script src="../admin-shared.js" defer></script>
+    <script src="users.js" defer></script>
+  </head>
+  <body>
+    <div class="admin-shell">
+      <header class="admin-header">
+        <nav class="admin-nav container" aria-label="Admin navigation">
+          <a class="brand" href="/admin/"><img class="brand-logo" src="../../assets/me-mars-family-logo.jpg" alt="ME MARS FAMILY logo" /><span>ME MARS FAMILY Admin</span></a>
+          <div class="admin-links"><a href="/admin/">Dashboard</a><a href="/admin/users/">Users</a><a href="/admin/media/">Media</a><a href="/admin/news/">News</a><span data-admin-role class="admin-user-role">Loading...</span><a href="#logout" data-logout>Logout</a></div>
+        </nav>
+      </header>
+      <main class="admin-main container">
+        <div data-page-message></div>
+        <section class="page-heading"><div><p class="eyebrow">Admin only</p><h1>User Management</h1><p>List staff profiles, assign/remove roles, and disable or re-enable admin access.</p></div></section>
+        <section class="admin-card"><div class="table-wrap"><table><thead><tr><th>User</th><th>Active</th><th>Roles</th><th>Assign Role</th><th>Actions</th></tr></thead><tbody data-user-rows></tbody></table></div></section>
+      </main>
+    </div>
+  </body>
+</html>
