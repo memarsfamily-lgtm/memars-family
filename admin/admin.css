@@ -107,3 +107,8 @@ tr:last-child td { border-bottom: 0; }
   .form-row.two, .dashboard-grid { grid-template-columns: 1fr; }
   .admin-card, .login-card, .form-card { padding: 22px; }
 }
+.drop-zone { display:grid; gap:8px; place-items:center; min-height:160px; border:2px dashed rgba(15,118,110,.35); border-radius:22px; background:#f1fffb; padding:24px; color:var(--teal-900); text-align:center; }
+.media-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; }
+.media-card { border:1px solid rgba(15,118,110,.12); border-radius:18px; padding:14px; background:#fff; }
+.media-card img,.media-card video { width:100%; aspect-ratio:16/10; object-fit:cover; border-radius:14px; background:#e5e7eb; }
+.report-only.hidden { display:none; }
