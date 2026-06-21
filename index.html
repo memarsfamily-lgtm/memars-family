@@ -21,6 +21,8 @@
      <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
     <script src="lib/supabase-config.js" defer></script>
     <script src="lib/supabase-client.js" defer></script>
+      <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    <script src="lib/form-security.js" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -42,7 +44,7 @@
             <li><a href="#home">Home</a></li>
             <li><a href="#about">About Us</a></li>
             <li><a href="#programs">Our Programs</a></li>
-            <li><a href="#stories">Success Stories</a></li>
+         <li><a href="#stories">Success Stories</a></li><li><a href="#reports">Reports</a></li>
             <li><a href="#contact">Contact Us</a></li>
           </ul>
           <div class="language-switcher" aria-label="Language switcher">
@@ -200,6 +202,17 @@
         </div>
       </section>
 
+            <section class="section" id="reports" aria-labelledby="reports-title">
+              <div class="container">
+                <div class="section-heading reveal">
+                  <p class="eyebrow">Reports Library</p>
+                  <h2 id="reports-title">Public reports and organizational documents.</h2>
+                  <p>Download annual reports, financial reports, strategic plans, research documents, and program reports.</p></div>
+                <div class="updates-grid" data-reports>
+                  <p class="state-message">Reports will appear here when published.</p>
+                </div></div>
+            </section>
+      
       <section class="section alt" id="partners" aria-labelledby="partners-title">
         <div class="container partners-layout">
           <div class="section-copy reveal">
@@ -209,7 +222,7 @@
               ME MARS FAMILY operates under the legal compliance of its official endorsement, the "Collaboration letter ME MARS FAMILY".
             </p>
           </div>
-          <div class="partner-list reveal" data-partners></div>
+                   <div class="partner-list reveal" data-partners></div><div class="testimonial-list" data-testimonials></div>
         </div>
       </section>
 
@@ -269,7 +282,7 @@
             </div>
           </div>
 
-          <form class="contact-form reveal" aria-label="Contact form">
+                    <form class="contact-form reveal" aria-label="Contact form" data-protected-form>
             <label for="full-name">Full Name</label>
             <input id="full-name" name="full-name" type="text" autocomplete="name" required />
 
@@ -279,14 +292,21 @@
             <label for="phone">Phone Number</label>
             <input id="phone" name="phone" type="tel" autocomplete="tel" />
 
+                                  <label for="subject">Subject</label><input id="subject" name="subject" type="text" required />
+            <label class="hidden" for="website">Website</label><input class="hidden" id="website" name="website" type="text" tabindex="-1" autocomplete="off" />
             <label for="message">Your Message</label>
             <textarea id="message" name="message" rows="6" required></textarea>
 
             <button class="btn btn-primary" type="submit">Submit Message</button>
-            <p class="form-note">This demo form is front-end only. Connect it to an email or CRM service before launch.</p>
+            <p class="form-note">Your message is stored securely for staff review.</p>
           </form>
         </div>
       </section>
+       <section class="section alt" id="get-involved-forms" aria-labelledby="forms-title"><div class="container two-column">
+         <div class="section-copy reveal"><p class="eyebrow">Get Involved</p>
+           <h2 id="forms-title">Volunteer or request a partnership.</h2>
+           <p>These accessible forms are reviewed by ME MARS FAMILY staff in Supabase-powered admin workflows.</p></div>
+         <div class="mission-card reveal"><form class="form-grid" data-volunteer-form data-protected-form><h3>Volunteer Application</h3><input name="full_name" placeholder="Full name" required><input name="email" type="email" placeholder="Email" required><input name="phone" placeholder="Phone"><textarea name="skills" placeholder="Skills"></textarea><textarea name="interests" placeholder="Interests"></textarea><input name="availability" placeholder="Availability"><textarea name="motivation" placeholder="Motivation"></textarea><input class="hidden" name="website" tabindex="-1" autocomplete="off"><button class="btn btn-primary">Submit Volunteer Application</button></form><form class="form-grid" data-partnership-form data-protected-form><h3>Partnership Request</h3><input name="organization" placeholder="Organization" required><input name="contact_person" placeholder="Contact person" required><input name="email" type="email" placeholder="Email" required><input name="phone" placeholder="Phone"><textarea name="partnership_proposal" placeholder="Proposal" required></textarea><input class="hidden" name="website" tabindex="-1" autocomplete="off"><button class="btn btn-secondary">Submit Partnership Request</button></form></div></div></section>
     </main>
 
     <footer class="site-footer">
