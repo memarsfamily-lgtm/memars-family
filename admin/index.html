@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Admin Dashboard | ME MARS FAMILY</title>
+    <link rel="icon" href="../assets/me-mars-family-logo.jpg" type="image/jpeg" />
+    <link rel="stylesheet" href="admin.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="../lib/supabase-config.js" defer></script>
+    <script src="../lib/supabase-client.js" defer></script>
+    <script src="auth.js" defer></script>
+    <script src="dashboard.js" defer></script>
+  </head>
+  <body>
+    <div class="admin-shell">
+      <header class="admin-header">
+        <nav class="admin-nav container" aria-label="Admin navigation">
+          <a class="brand" href="/admin/">
+            <img class="brand-logo" src="../assets/me-mars-family-logo.jpg" alt="ME MARS FAMILY official logo" width="48" height="48" />
+            <span>ME MARS FAMILY Admin</span>
+          </a>
+          <div class="admin-links">
+            <a href="/admin/events/">Events</a>
+            <span class="admin-user-role" data-admin-role>Loading...</span>
+            <a href="#logout" data-logout>Logout</a>
+          </div>
+        </nav>
+      </header>
+      <main class="admin-main container">
+        <div data-page-message></div>
+        <section class="page-heading">
+          <div>
+            <p class="eyebrow">Dashboard</p>
+            <h1>Welcome, <span data-admin-name>Admin User</span></h1>
+            <p>Manage ME MARS FAMILY platform content securely with Supabase.</p>
+          </div>
+          <a class="btn btn-primary" href="/admin/events/" data-editor-only>Manage Events</a>
+        </section>
+        <section class="dashboard-grid" aria-label="Event statistics">
+          <article class="stat-card"><strong data-total-events>—</strong><span>Total Events</span></article>
+          <article class="stat-card"><strong data-published-events>—</strong><span>Published</span></article>
+          <article class="stat-card"><strong data-draft-events>—</strong><span>Drafts</span></article>
+          <article class="stat-card"><strong data-archived-events>—</strong><span>Archived</span></article>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

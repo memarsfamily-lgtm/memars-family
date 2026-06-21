@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Admin Login | ME MARS FAMILY</title>
+    <link rel="icon" href="../assets/me-mars-family-logo.jpg" type="image/jpeg" />
+    <link rel="stylesheet" href="admin.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="../lib/supabase-config.js" defer></script>
+    <script src="../lib/supabase-client.js" defer></script>
+    <script src="auth.js" defer></script>
+    <script src="login.js" defer></script>
+  </head>
+  <body>
+    <main class="login-wrap">
+      <section class="login-card" aria-labelledby="login-title">
+        <a class="brand" href="../index.html">
+          <img class="brand-logo" src="../assets/me-mars-family-logo.jpg" alt="ME MARS FAMILY official logo" width="48" height="48" />
+          <span>ME MARS FAMILY</span>
+        </a>
+        <p class="eyebrow">Admin Portal</p>
+        <h1 id="login-title">Sign in</h1>
+        <p>Use your staff account to manage NGO events and platform content.</p>
+        <div data-login-message></div>
+        <form class="form-grid" data-login-form>
+          <div class="form-row">
+            <label for="email">Email address</label>
+            <input id="email" name="email" type="email" autocomplete="email" required />
+          </div>
+          <div class="form-row">
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" autocomplete="current-password" required />
+          </div>
+          <button class="btn btn-primary" type="submit" data-login-submit>Sign in</button>
+        </form>
+      </section>
+    </main>
+  </body>
+</html>
