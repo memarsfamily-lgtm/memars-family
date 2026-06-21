@@ -32,13 +32,13 @@ const loadPublicData = async () => {
       client.from('partner_logos').select('*').eq('is_active',true).is('deleted_at',null).order('sort_order'),
       client.from('testimonials').select('*').eq('is_active',true).eq('consent_confirmed',true).is('deleted_at',null).order('sort_order').limit(3)
     ]);
-    if (home.data) {
-      document.querySelector('#hero-title').textContent = home.data.hero_title || 'ME MARS FAMILY';
-      document.querySelector('.hero-tagline').textContent = home.data.hero_subtitle || '';
-      document.querySelector('.hero-intro').textContent = home.data.hero_intro || '';
-      const [primary, secondary] = document.querySelectorAll('.hero-copy .btn');
-      if (primary) { primary.textContent = home.data.primary_cta_label || 'Learn More'; primary.href = home.data.primary_cta_url || '#about'; }
-      if (secondary) { secondary.textContent = home.data.secondary_cta_label || 'Donate Now'; secondary.href = home.data.secondary_cta_url || '#donate'; }
+if (home.data) {
+  document.querySelector('#hero-title').textContent = home.data.hero_title || 'ME MARS FAMILY';
+  document.querySelector('.hero-tagline').textContent = home.data.hero_subtitle || '';
+  document.querySelector('.hero-intro').textContent = home.data.hero_intro || '';
+  const [primary, secondary] = document.querySelectorAll('.hero-copy .btn');
+  if (primary) { primary.textContent = home.data.primary_cta_label || 'Learn More'; primary.href = home.data.primary_cta_url || '#about'; }
+  if (secondary) { secondary.textContent = home.data.secondary_cta_label || 'Donate Now'; secondary.href = home.data.secondary_cta_url || '#donate'; }
    if (stats.data?.length) renderList('.stats-grid', stats.data, (s) => `<div class="stat reveal"><span>${esc(s.value)}</span><p>${esc(s.label)}</p></div>`);
     const updates = [...(news.data||[]), ...(events.data||[])].slice(0,6);
     renderList('[data-updates]', updates, (item) => `<article class="update-card reveal"><div class="update-media" data-label="${esc(item.category || 'Event')}"></div><div><h3>${esc(item.title)}</h3><p>${esc(item.summary || item.description || '')}</p></div></article>`);
