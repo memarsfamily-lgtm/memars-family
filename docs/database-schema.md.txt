@@ -1,0 +1,149 @@
+# Database Schema Guide
+
+This document describes the Phase 2 Supabase Postgres schema for the ME MARS FAMILY NGO platform.
+
+Phase 2 focuses only on the database foundation. Authentication screens, admin UI, public UI integration, and detailed RLS behavior are intentionally deferred to later phases.
+
+## Table Relationship Diagram
+
+```text
+auth.users
+   ¦
+   ?
+public.profiles
+   ¦  +------------------------------+
+   ¦  ¦                              ¦
+   ?  ?                              ?
+public.user_roles -------------? public.roles
+   ¦
+   +------------ author/creator/update references -------------+
+   ¦                                                           ¦
+   ?                                                           ?
+public.events ----------------? public.event_media       public.audit_logs
+   ¦
+   +-------- referenced by -----? public.homepage_settings
+   ¦
+   +------------------------------------------------------------
+
+public.news ------------------? public.homepage_settings
+public.reports
+public.impact_statistics
+public.testimonials
+public.partner_logos
+
+public.contact_messages ------? public.profiles assigned_to
+public.volunteer_applications -? public.profiles assigned_to
+public.partnership_requests ---? public.profiles assigned_to
+```
+
+## Access Model Tables
+
+| Table | Purpose |
+| --- | --- |
+| `profiles` | Staff/user profile linked to `auth.users`. |
+| `roles` | Canonical role records for Admin, Editor, Media Manager, and Viewer. |
+| `user_roles` | Join table for assigning one or more roles to a profile. |
+
+`profiles.role` remains from Phase 1 as a compatibility/default role. Phase 2 adds `roles` and `user_roles` for scalable multi-role access. The `current_user_roles()` and `has_role()` helpers use `user_roles` first and fall back to `profiles.role`.
+
+## Content Tables
+
+| Table | Purpose |
+| --- | --- |
+| `events` | Event records with slug, description, event date, location, featured flag, status, and author. |
+| `event_media` | Images/videos attached to events, including file path, public URL, captions, alt text, consent, approval, visibility, and ordering. |
+| `news` | Success stories, announcements, program updates, and impact stories. |
+| `reports` | Annual reports, financial reports, strategic plans, and research documents. |
+
+## Website CMS Tables
+
+| Table | Purpose |
+| --- | --- |
+| `homepage_settings` | Editable hero content, CTA links, and featured event/news pointers. |
+| `impact_statistics` | Editable impact metrics such as Families Supported and Children Reached. |
+| `testimonials` | Public testimonials with consent enforcement. |
+| `partner_logos` | Partner logo metadata and ordering. |
+
+## Form Tables
+
+| Table | Purpose |
+| --- | --- |
+| `contact_messages` | Contact form submissions. |
+| `volunteer_applications` | Volunteer application submissions. |
+| `partnership_requests` | Partnership inquiry submissions. |
+
+Each form table includes `status`, `assigned_to`, `admin_notes`, spam metadata, timestamps, and soft delete support.
+
+## Governance Table
+
+| Table | Purpose |
+| --- | --- |
+| `audit_logs` | Tracks actor, action, target table/entity, target record, timestamp, and before/after JSON. |
+
+Phase 2 adds `updated_at` to the Phase 1 audit log foundation so the table follows the same timestamp standard as the rest of the platform.
+
+## Index Strategy
+
+The migration adds indexes for five primary access patterns:
+
+1. **Public content lookup**
+   - `events(status, featured, event_date desc)`
+   - `news(status, category, featured, publish_date desc)`
+   - `reports(status, category, featured, publication_date desc)`
+
+2. **Slug routing**
+   - Live slug indexes for events, news, and reports support URLs such as `/events/positive-parenting-workshop-kigali`.
+
+3. **Admin filtering**
+   - Status/date indexes on messages, volunteer applications, and partnership requests support dashboard queues.
+
+4. **Relationship joins**
+   - Author, assigned user, event media, role, and profile indexes support admin screens and relational queries.
+
+5. **Soft-delete aware queries**
+   - Most operational indexes include `where deleted_at is null` so normal queries skip archived/deleted data efficiently.
+
+## Soft Delete Strategy
+
+Soft-delete support is included on operational tables where records should normally be retained for auditability or recovery:
+
+- `roles`
+- `user_roles`
+- `events`
+- `event_media`
+- `news`
+- `reports`
+- `homepage_settings`
+- `impact_statistics`
+- `testimonials`
+- `partner_logos`
+- `contact_messages`
+- `volunteer_applications`
+- `partnership_requests`
+
+`audit_logs` are not soft-deleted because audit records should be immutable operational history.
+
+## Recommended RLS Preparation
+
+Phase 2 enables RLS on all new tables but intentionally does not add final detailed policies yet. Detailed policies should be added in Phase 3 when authentication and admin workflows are implemented.
+
+Recommended future policy groups:
+
+| Table Group | Anonymous Access | Staff Access |
+| --- | --- | --- |
+| Public content | Read only published, non-deleted rows | Role-based full/read access |
+| Event media | Read only approved public media | Media Manager/Editor/Admin manage |
+| Forms | Anonymous insert only | Staff read/update by role |
+| Roles/users | None | Admin manage, current user read own profile |
+| Audit logs | None | Admin read, staff insert controlled audit entries |
+
+## Design Decisions
+
+- **UUID primary keys** are used on every Phase 2 table to work well with Supabase, distributed clients, and future imports.
+- **Enums** are used for statuses, media types, visibility, news categories, report categories, and submission statuses to prevent invalid data.
+- **Slugs are unique** on public content tables to support stable SEO-friendly routes.
+- **Published content requires `published_at`** so publication history is explicit.
+- **Event media directly stores file paths and URLs** because the roadmap requested an event media table with those fields; a more general media library can still be added later if needed.
+- **Consent and approval checks live in the database** for event media and testimonials so unsafe public publishing is harder to do accidentally.
+- **Homepage settings use UUID primary keys** and an active-row uniqueness index, allowing future drafts or revision history while keeping one active homepage configuration.
+- **Form submissions are retained with statuses and soft deletes** so staff can manage workflow without losing operational history.

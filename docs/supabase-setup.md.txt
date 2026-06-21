@@ -1,0 +1,93 @@
+# Supabase Setup Guide
+
+This project uses Supabase for backend functionality while preserving the current static website design.
+
+## Phase 1 Scope
+
+Phase 1 adds the foundation only:
+
+- Supabase environment configuration.
+- Browser client initialization.
+- Initial role model.
+- Profile table connected to Supabase Auth users.
+- RLS helper functions.
+- Storage bucket definitions.
+- Baseline RLS policies for roles, profiles, and audit logs.
+
+Content tables such as events, news, reports, and forms are added in later phases.
+
+## Required Supabase Services
+
+Enable these services in your Supabase project:
+
+- Auth
+- Postgres Database
+- Storage
+- Row Level Security
+
+## Environment Variables
+
+Copy `.env.example` and fill in your Supabase project values:
+
+```bash
+cp .env.example .env
+```
+
+Required values:
+
+| Variable | Description |
+| --- | --- |
+| `SUPABASE_URL` | Your Supabase project URL. |
+| `SUPABASE_ANON_KEY` | Public anon key used by browser code. RLS must remain enabled. |
+| `SITE_URL` | Public production site URL for future SEO/canonical URL generation. |
+
+Because this repository is currently static HTML/CSS/JavaScript, the browser configuration is stored in `lib/supabase-config.js`. Update that file during deployment with the same Supabase URL and anon key.
+
+## Applying Migrations
+
+Install and authenticate the Supabase CLI, then link the project:
+
+```bash
+supabase login
+supabase link --project-ref YOUR_PROJECT_REF
+```
+
+Apply migrations:
+
+```bash
+supabase db push
+```
+
+Alternatively, paste the SQL migration files from `supabase/migrations/` into the Supabase SQL editor in order.
+
+## Storage Buckets
+
+The Phase 1 migration creates these buckets:
+
+| Bucket | Public | Purpose |
+| --- | --- | --- |
+| `public-media` | Yes | Approved public images, video posters, and optimized public media. |
+| `private-media` | No | Pending uploads, originals, and unapproved media. |
+| `documents` | No | Reports and policy documents. Public access is controlled by database metadata and later signed/public URL workflows. |
+| `admin-uploads` | No | Temporary admin upload staging. |
+
+## Initial Admin User
+
+1. Create a user in Supabase Auth.
+2. Insert or update the matching row in `public.profiles` with role `admin`.
+3. Use the admin account for later admin dashboard phases.
+
+Example:
+
+```sql
+update public.profiles
+set role = 'admin', is_active = true
+where email = 'admin@example.org';
+```
+
+## Security Notes
+
+- Never expose the Supabase service role key in browser code.
+- Keep RLS enabled on all public tables.
+- The anon key is safe for browser use only when RLS policies are correct.
+- Staff roles are stored in `public.profiles.role` and enforced with database helper functions.

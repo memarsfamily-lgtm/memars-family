@@ -1,0 +1,124 @@
+# Authentication and Event Management Guide
+
+This guide covers the Phase 3 and Phase 4 implementation: Supabase Auth, protected admin access, role-based authorization, RLS policies, and event CRUD.
+
+## Admin URLs
+
+| Page | Purpose |
+| --- | --- |
+| `/admin/login.html` | Staff login with Supabase Auth email/password. |
+| `/admin/` | Protected admin dashboard. |
+| `/admin/events/` | Event listing, search, filtering, publish/archive/delete actions. |
+| `/admin/events/new/` | Create an event. |
+| `/admin/events/edit/?id=EVENT_ID` | Edit an event. Static hosting cannot natively support `/admin/events/:id/edit` without a router, so the static implementation uses a query parameter. |
+
+## Roles
+
+| Role | Access |
+| --- | --- |
+| Admin | Full access and role assignment functions. |
+| Editor | Create/edit events and publish/archive content. |
+| Media Manager | Read event information now; media management starts in Phase 5. |
+| Viewer | Read-only admin access. |
+
+The browser profile loader reads `public.profiles`, then reads `public.user_roles` joined to `public.roles`. If no assigned roles exist, the system falls back to `profiles.role` from Phase 1.
+
+## Role Assignment
+
+Phase 3 adds admin-only SQL functions:
+
+```sql
+select public.assign_user_role('USER_UUID', 'editor');
+select public.remove_user_role('USER_UUID', 'editor');
+```
+
+Initial admin setup can still use the Phase 1 profile fallback:
+
+```sql
+update public.profiles
+set role = 'admin', is_active = true
+where email = 'admin@example.org';
+```
+
+After an admin exists, prefer the assignment function for additional users.
+
+## Authentication Flow
+
+1. Staff visit `/admin/login.html`.
+2. The login page calls `supabase.auth.signInWithPassword()`.
+3. Protected pages call `supabase.auth.getSession()`.
+4. If no session exists, users are redirected to `/admin/login.html?next=...`.
+5. The admin shell loads the active profile and roles.
+6. UI controls are hidden or disabled according to role.
+7. Database access is enforced by Supabase RLS policies.
+
+## Event Management Flow
+
+### Create Draft
+
+1. Login as Admin or Editor.
+2. Open `/admin/events/new/`.
+3. Add title, slug, description, date, location, and featured flag.
+4. Keep status as Draft.
+5. Submit the form.
+
+### Publish Event
+
+1. Open `/admin/events/`.
+2. Click Publish on a draft or archived event, or open the edit page and click Publish.
+3. The UI sets `status = 'published'` and fills `published_at`.
+
+### Archive Event
+
+1. Open `/admin/events/`.
+2. Click Archive, or edit the event and click Archive.
+3. The event remains in the database with `status = 'archived'`.
+
+### Soft Delete Event
+
+1. Open `/admin/events/` or the edit page.
+2. Click Delete.
+3. The UI sets `deleted_at` and changes status to archived.
+4. Normal admin lists filter out rows where `deleted_at` is not null.
+
+## Validation
+
+The event form validates:
+
+- Title is required.
+- Slug is required.
+- Slug must contain lowercase letters, numbers, and hyphens.
+- Published events include a `published_at` timestamp.
+
+Database constraints also enforce non-blank titles/slugs and require `published_at` for published rows.
+
+## RLS Policies Added
+
+Phase 3/4 adds RLS policies for:
+
+- public read access to published events only;
+- staff read access to events;
+- Admin/Editor insert and update access to events;
+- Admin hard-delete access, although the UI uses soft delete;
+- public read access to approved public event media, for future Phase 5 display;
+- staff read access to event media;
+- staff read access to news/reports for dashboard-adjacent future work;
+- role and user-role read/manage access.
+
+## Sample Events
+
+The migration seeds realistic NGO events:
+
+- Positive Parenting Workshop
+- Child Protection Awareness Campaign
+- Family Resilience Training
+- Inclusive Support Session for Children with Disabilities
+
+These are for testing event listing, filtering, publishing, archiving, and editing.
+
+## Known Limitations Before Phase 5
+
+- Media uploads are intentionally not implemented yet.
+- News management is intentionally not implemented yet.
+- Static hosting cannot serve true `/admin/events/:id/edit` paths without a router or rewrite rule, so Phase 4 uses `/admin/events/edit/?id=EVENT_ID`.
+- The admin UI uses the public anon Supabase client and relies on RLS, so policies must be applied before production use.
