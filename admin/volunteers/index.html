@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Volunteer Applications | Admin</title>
+
+    <link rel="stylesheet" href="../admin.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="../../lib/supabase-config.js" defer></script>
+    <script src="../../lib/supabase-client.js" defer></script>
+    <script src="../auth.js" defer></script>
+    <script src="../admin-shared.js" defer></script>
+    <script src="../submissions.js" defer></script>
+</head>
+
+<body data-module="volunteers">
+    <div class="admin-shell">
+        <header class="admin-header">
+            <nav class="admin-nav container">
+                <a class="brand" href="/admin/">
+                    <img
+                        class="brand-logo"
+                        src="../../assets/me-mars-family-logo.jpg"
+                        alt="ME MARS FAMILY logo"
+                    >
+                    <span>ME MARS FAMILY Admin</span>
+                </a>
+
+                <div class="admin-links">
+                    <a href="/admin/">Dashboard</a>
+                    <a href="/admin/contact/">Contact</a>
+                    <a href="/admin/volunteers/">Volunteers</a>
+                    <a href="/admin/partnerships/">Partnerships</a>
+
+                    <span
+                        data-admin-role
+                        class="admin-user-role"
+                    >
+                        Loading...
+                    </span>
+
+                    <a
+                        data-logout
+                        href="#logout"
+                    >
+                        Logout
+                    </a>
+                </div>
+            </nav>
+        </header>
+
+        <main class="admin-main container">
+            <div data-page-message></div>
+
+            <section class="page-heading">
+                <div>
+                    <p class="eyebrow">Forms</p>
+
+                    <h1>Volunteer Applications</h1>
+
+                    <p>
+                        Review submissions, track status,
+                        and record staff notes.
+                    </p>
+                </div>
+            </section>
+
+            <section class="admin-card">
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Submitter</th>
+                                <th>Status</th>
+                                <th>Received</th>
+                                <th>Details</th>
+                                <th>Review</th>
+                            </tr>
+                        </thead>
+
+                        <tbody data-submission-rows></tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>
