@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Edit Event | ME MARS FAMILY Admin</title>
+    <link rel="icon" href="../../../assets/me-mars-family-logo.jpg" type="image/jpeg" />
+    <link rel="stylesheet" href="../../admin.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="../../../lib/supabase-config.js" defer></script>
+    <script src="../../../lib/supabase-client.js" defer></script>
+    <script src="../../auth.js" defer></script>
+    <script src="../event-form.js" defer></script>
+  </head>
+  <body>
+    <div class="admin-shell">
+      <header class="admin-header">
+        <nav class="admin-nav container" aria-label="Admin navigation">
+          <a class="brand" href="/admin/">
+            <img class="brand-logo" src="../../../assets/me-mars-family-logo.jpg" alt="ME MARS FAMILY official logo" width="48" height="48" />
+            <span>ME MARS FAMILY Admin</span>
+          </a>
+          <div class="admin-links">
+            <a href="/admin/">Dashboard</a>
+            <a href="/admin/events/">Events</a>
+            <span class="admin-user-role" data-admin-role>Loading...</span>
+            <a href="#logout" data-logout>Logout</a>
+          </div>
+        </nav>
+      </header>
+      <main class="admin-main container">
+        <div data-page-message></div>
+        <section class="page-heading">
+          <div>
+            <p class="eyebrow">Events</p>
+            <h1>Edit Event</h1>
+            <p>Update event details, publish approved events, or archive old events.</p>
+          </div>
+          <a class="btn btn-light" href="/admin/events/">Back to Events</a>
+        </section>
+        <section class="form-card">
+          <form class="form-grid" data-event-form>
+            <div class="form-row two">
+              <div><label for="title">Title</label><input id="title" name="title" type="text" required /></div>
+              <div><label for="slug">Slug</label><input id="slug" name="slug" type="text" required /></div>
+            </div>
+            <div class="form-row"><label for="description">Description</label><textarea id="description" name="description" rows="7"></textarea></div>
+            <div class="form-row two">
+              <div><label for="event_date">Date</label><input id="event_date" name="event_date" type="date" /></div>
+              <div><label for="location">Location</label><input id="location" name="location" type="text" /></div>
+            </div>
+            <div class="form-row two">
+              <div><label for="status">Status</label><select id="status" name="status"><option value="draft">Draft</option><option value="published">Published</option><option value="archived">Archived</option></select></div>
+              <label class="checkbox-row"><input id="featured" name="featured" type="checkbox" /> Featured event</label>
+            </div>
+            <div class="actions">
+              <button class="btn btn-primary" type="submit" data-save-event>Save Changes</button>
+              <button class="btn btn-secondary" type="button" data-publish-event>Publish</button>
+              <button class="btn btn-light" type="button" data-archive-event>Archive</button>
+              <button class="btn btn-danger" type="button" data-delete-event>Delete</button>
+            </div>
+          </form>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
