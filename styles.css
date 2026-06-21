@@ -228,3 +228,12 @@ address { font-style: normal; color: var(--muted); margin-top: 18px; }
   *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; animation: none !important; }
   .reveal { opacity: 1; transform: none; }
 }
+.public-media { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; border-radius: 20px 20px 0 0; background: #e5e7eb; }
+.state-message { padding: 18px; border-radius: 18px; background: #f1fffb; color: #134e4a; font-weight: 800; }
+.testimonial-list { display: grid; gap: 12px; margin-top: 18px; }
+.testimonial-card { margin: 0; padding: 18px; border-radius: 18px; background: #fff; border: 1px solid rgba(15,118,110,.12); }
+.form-grid { display: grid; gap: 12px; }
+.hidden { display: none !important; }
+.form-status { border-radius: 14px; padding: 12px 14px; font-weight: 800; background: #fee2e2; color: #991b1b; }
+.form-status.success { background: #ccfbf1; color: #134e4a; }
+:focus-visible { outline: 3px solid rgba(250, 204, 21, 0.8); outline-offset: 3px; }
