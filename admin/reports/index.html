@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Reports Library | ME MARS FAMILY Admin</title>
+
+    <link rel="icon" href="../../assets/me-mars-family-logo.jpg">
+    <link rel="stylesheet" href="../admin.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="../../lib/supabase-config.js" defer></script>
+    <script src="../../lib/supabase-client.js" defer></script>
+    <script src="../auth.js" defer></script>
+    <script src="../admin-shared.js" defer></script>
+    <script src="../crud.js" defer></script>
+</head>
+
+<body data-module="reports">
+    <div class="admin-shell">
+        <header class="admin-header">
+            <nav class="admin-nav container">
+                <a class="brand" href="/admin/">
+                    <img
+                        class="brand-logo"
+                        src="../../assets/me-mars-family-logo.jpg"
+                        alt="ME MARS FAMILY logo"
+                    >
+                    <span>ME MARS FAMILY Admin</span>
+                </a>
+
+                <div class="admin-links">
+                    <a href="/admin/">Dashboard</a>
+                    <a href="/admin/media/">Media</a>
+                    <a href="/admin/news/">News</a>
+                    <a href="/admin/homepage/">Homepage</a>
+                    <a href="/admin/reports/">Reports</a>
+
+                    <span
+                        data-admin-role
+                        class="admin-user-role"
+                    >
+                        Loading...
+                    </span>
+
+                    <a href="#logout" data-logout>
+                        Logout
+                    </a>
+                </div>
+            </nav>
+        </header>
+
+        <main class="admin-main container">
+            <div data-page-message></div>
+
+            <section class="page-heading">
+                <div>
+                    <p class="eyebrow">Content</p>
+
+                    <h1>Reports Library</h1>
+
+                    <p>
+                        Draft, publish, feature, archive,
+                        and maintain public content.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Report Form -->
+            <section class="form-card">
+                <form class="form-grid" data-crud-form>
+
+                    <div class="form-row two">
+                        <div>
+                            <label>
+                                Title
+                                <input
+                                    name="title"
+                                    required
+                                >
+                            </label>
+                        </div>
+
+                        <div>
+                            <label>
+                                Slug
+                                <input
+                                    name="slug"
+                                    required
+                                >
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-row two">
+                        <div>
+                            <label>
+                                Document Type
+                                <select
+                                    name="category"
+                                    required
+                                >
+                                    <option value="annual_report">
+                                        Annual Report
+                                    </option>
+
+                                    <option value="financial_report">
+                                        Financial Report
+                                    </option>
+
+                                    <option value="strategic_plan">
+                                        Strategic Plan
+                                    </option>
+
+                                    <option value="research_document">
+                                        Research Document
+                                    </option>
+
+                                    <option value="program_report">
+                                        Program Report
+                                    </option>
+                                </select>
+                            </label>
+                        </div>
+
+                        <div>
+                            <label>
+                                Status
+                                <select name="status">
+                                    <option value="draft">
+                                        Draft
+                                    </option>
+
+                                    <option value="published">
+                                        Published
+                                    </option>
+
+                                    <option value="archived">
+                                        Archived
+                                    </option>
+                                </select>
+                            </label>
+                        </div>
+                    </div>
+
+                    <label>
+                        Summary / Description
+                        <textarea
+                            name="description"
+                            rows="3"
+                        ></textarea>
+                    </label>
+
+                    <div class="form-row two">
+                        <label>
+                            Date
+                            <input
+                                name="publication_date"
+                                type="date"
+                            >
+                        </label>
+
+                        <label class="checkbox-row">
+                            <input
+                                name="featured"
+                                type="checkbox"
+                            >
+                            Featured
+                        </label>
+                    </div>
+
+                    <label>
+                        SEO Description
+                        <textarea
+                            name="seo_description"
+                            rows="2"
+                        ></textarea>
+                    </label>
+
+                    <label class="report-only">
+                        PDF Upload
+                        <input
+                            data-file
+                            type="file"
+                            accept="application/pdf"
+                        >
+                    </label>
+
+                    <div class="actions">
+                        <button
+                            class="btn btn-primary"
+                            type="submit"
+                        >
+                            Save
+                        </button>
+
+                        <button
+                            class="btn btn-light"
+                            type="reset"
+                        >
+                            New
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Reports Table -->
+            <section
+                class="admin-card"
+                style="margin-top: 24px;"
+            >
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Category</th>
+                                <th>Status</th>
+                                <th>Featured</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody data-crud-rows></tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>
