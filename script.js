@@ -47,6 +47,7 @@ client.from('event_media').select('*, events(title,status)').eq('visibility', 'p
       client.from('reports').select('*').eq('status', 'published').is('deleted_at', null).order('publication_date', { ascending: false }).limit(6),
       client.from('partner_logos').select('*').eq('is_active', true).is('deleted_at', null).order('sort_order'),
       client.from('testimonials').select('*').eq('is_active', true).eq('consent_confirmed', true).is('deleted_at', null).order('sort_order').limit(3)
+      ]);
 const fallback = {
   programs: [
     { icon: '🛡️', title: 'Child Protection', points: ['Protecting and promoting children\'s rights.', 'Preventing and combating violence against children.', 'Promoting positive parenting practices within families.', 'Providing tailored assistance to children facing hardship.'] },
