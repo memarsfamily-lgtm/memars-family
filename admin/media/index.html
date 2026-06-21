@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Media Library | ME MARS FAMILY Admin</title>
+
+    <link rel="stylesheet" href="../admin.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="../../lib/supabase-config.js" defer></script>
+    <script src="../../lib/supabase-client.js" defer></script>
+    <script src="../auth.js" defer></script>
+    <script src="../admin-shared.js" defer></script>
+    <script src="media.js" defer></script>
+</head>
+
+<body>
+    <div class="admin-shell">
+        <header class="admin-header">
+            <nav class="admin-nav container">
+                <a class="brand" href="/admin/">
+                    <img
+                        class="brand-logo"
+                        src="../../assets/me-mars-family-logo.jpg"
+                        alt="ME MARS FAMILY logo"
+                    >
+                    <span>ME MARS FAMILY Admin</span>
+                </a>
+
+                <div class="admin-links">
+                    <a href="/admin/">Dashboard</a>
+                    <a href="/admin/events/">Events</a>
+                    <a href="/admin/news/">News</a>
+                    <a href="/admin/homepage/">Homepage</a>
+                    <a href="/admin/reports/">Reports</a>
+
+                    <span
+                        data-admin-role
+                        class="admin-user-role"
+                    >
+                        Loading...
+                    </span>
+
+                    <a data-logout href="#logout">Logout</a>
+                </div>
+            </nav>
+        </header>
+
+        <main class="admin-main container">
+            <div data-page-message></div>
+
+            <section class="page-heading">
+                <div>
+                    <p class="eyebrow">Phase 5</p>
+
+                    <h1>Media Library</h1>
+
+                    <p>
+                        Upload, preview, associate, order, approve,
+                        and publish event media with consent controls.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Media Upload Form -->
+            <section class="form-card">
+                <form class="form-grid" data-media-form>
+
+                    <div class="form-row two">
+                        <label>
+                            Event
+                            <select
+                                name="event_id"
+                                required
+                                data-events
+                            ></select>
+                        </label>
+
+                        <label>
+                            Visibility
+                            <select name="visibility">
+                                <option value="private">Private</option>
+                                <option value="public">Public</option>
+                            </select>
+                        </label>
+                    </div>
+
+                    <div class="form-row two">
+                        <label>
+                            Approval
+                            <select name="approval_status">
+                                <option value="pending">Pending</option>
+                                <option value="approved">Approved</option>
+                                <option value="rejected">Rejected</option>
+                            </select>
+                        </label>
+
+                        <label>
+                            Sort Order
+                            <input
+                                name="sort_order"
+                                type="number"
+                                value="0"
+                            >
+                        </label>
+                    </div>
+
+                    <label>
+                        Caption
+                        <textarea
+                            name="caption"
+                            rows="2"
+                        ></textarea>
+                    </label>
+
+                    <label>
+                        Alt Text (required for public images)
+                        <input name="alt_text">
+                    </label>
+
+                    <label class="checkbox-row">
+                        <input
+                            name="consent_confirmed"
+                            type="checkbox"
+                        >
+                        Consent confirmed for all identifiable
+                        people/children
+                    </label>
+
+                    <div
+                        class="drop-zone"
+                        data-drop-zone
+                        tabindex="0"
+                    >
+                        <strong>
+                            Drag and drop images or videos here
+                        </strong>
+
+                        <span>
+                            or choose files below
+                        </span>
+
+                        <input
+                            data-files
+                            type="file"
+                            multiple
+                            accept="
+                                image/jpeg,
+                                image/png,
+                                image/webp,
+                                image/gif,
+                                video/mp4,
+                                video/webm,
+                                video/quicktime
+                            "
+                        >
+                    </div>
+
+                    <div data-upload-progress></div>
+
+                    <button
+                        class="btn btn-primary"
+                        type="submit"
+                    >
+                        Upload Media
+                    </button>
+                </form>
+            </section>
+
+            <!-- Media Library -->
+            <section
+                class="admin-card"
+                style="margin-top: 24px;"
+            >
+                <div
+                    class="media-grid"
+                    data-media-list
+                ></div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>
