@@ -202,6 +202,7 @@ document.querySelector('[data-partnership-form]')?.addEventListener('submit', as
   }
 });
 
+// 7. Language Switcher Logic
 const translations = {
   en: {
     nav_home: "Home",
@@ -230,18 +231,22 @@ const translations = {
 };
 
 const langButtons = document.querySelectorAll('.language-switcher button');
-const translatableElements = document.querySelectorAll('[data-i18n]');
 
 langButtons.forEach(button => {
   button.addEventListener('click', () => {
-    const selectedLang = button.getAttribute('data-lang');
-    if (!selectedLang) return; 
-
-    // Update active UI classes
+    // 1. Change active style immediately to verify the click works
     langButtons.forEach(btn => btn.classList.remove('active'));
     button.classList.add('active');
 
-    // Swap text values
+    // 2. Read language token
+    const selectedLang = button.getAttribute('data-lang');
+    if (!selectedLang) {
+      console.error("Language switcher error: Your HTML button is missing the 'data-lang' attribute!", button);
+      return;
+    }
+
+    // 3. Dynamically query and update elements matching data-i18n
+    const translatableElements = document.querySelectorAll('[data-i18n]');
     translatableElements.forEach(element => {
       const key = element.getAttribute('data-i18n');
       if (translations[selectedLang] && translations[selectedLang][key]) {
@@ -250,7 +255,6 @@ langButtons.forEach(button => {
     });
   });
 });
-
 // Kickoff
 loadPublicData();
 observeReveals(); // Trigger the observer scan once at the end
