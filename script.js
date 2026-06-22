@@ -202,6 +202,55 @@ document.querySelector('[data-partnership-form]')?.addEventListener('submit', as
   }
 });
 
+const translations = {
+  en: {
+    nav_home: "Home",
+    nav_about: "About Us",
+    nav_programs: "Our Programs",
+    nav_stories: "Success Stories",
+    nav_reports: "Reports",
+    nav_contact: "Contact Us"
+  },
+  fr: {
+    nav_home: "Accueil",
+    nav_about: "À propos de nous",
+    nav_programs: "Nos Programmes",
+    nav_stories: "Histoires de Réussite",
+    nav_reports: "Rapports",
+    nav_contact: "Contactez-nous"
+  },
+  kiny: {
+    nav_home: "Ahabanza",
+    nav_about: "Ibyerekeye Twebwe",
+    nav_programs: "Gahunda Zacu",
+    nav_stories: "Inkuru z'Ibyagezweho",
+    nav_reports: "Raporo",
+    nav_contact: "Tuvugishe"
+  }
+};
+
+const langButtons = document.querySelectorAll('.language-switcher button');
+const translatableElements = document.querySelectorAll('[data-i18n]');
+
+langButtons.forEach(button => {
+  button.addEventListener('click', () => {
+    const selectedLang = button.getAttribute('data-lang');
+    if (!selectedLang) return; 
+
+    // Update active UI classes
+    langButtons.forEach(btn => btn.classList.remove('active'));
+    button.classList.add('active');
+
+    // Swap text values
+    translatableElements.forEach(element => {
+      const key = element.getAttribute('data-i18n');
+      if (translations[selectedLang] && translations[selectedLang][key]) {
+        element.textContent = translations[selectedLang][key];
+      }
+    });
+  });
+});
+
 // Kickoff
 loadPublicData();
 observeReveals(); // Trigger the observer scan once at the end
